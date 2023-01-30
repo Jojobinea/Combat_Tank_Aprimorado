@@ -1,5 +1,4 @@
 import math
-import Animation
 import game
 import random
 from config import *
@@ -44,8 +43,6 @@ class Tank(pygame.sprite.Sprite):
         self.rot = rotation
 
     def update(self):
-        from game import screen
-
         self.rect.x = int(self.x)
         self.rect.y = int(self.y)
         self.ball_update()
@@ -67,8 +64,6 @@ class Tank(pygame.sprite.Sprite):
             self.direction = 0
         self.image = self.img_tank[int(self.direction)]
         if self.hit:
-            Animation.boom_sprites.draw(screen)
-            Animation.boom_sprites.update()
             self.direction -= 0.8
             return
         vel_x = math.cos((2-int(self.direction)/8)*math.pi)
@@ -95,20 +90,19 @@ class Tank(pygame.sprite.Sprite):
                 self.ball_list.remove(ball)
                 game.ball_sprites.remove(ball)
 
-
-# tank wall collision
-def wall_collision(tank):
-    for wall in game.walls:
-        if pygame.sprite.collide_mask(tank, wall):
-            # collision with top side of the wall
-            if abs(tank.rect.top - wall.rect.bottom) < 25:
-                tank.y += tank_speed
-            # collision with bottom side of the wall
-            elif abs(wall.rect.top - tank.rect.bottom) < 25:
-                tank.y -= tank_speed
-            # collision with the left side of the wall
-            elif abs(wall.rect.left - tank.rect.right) < 25:
-                tank.x -= tank_speed
-            # collision with the right side of the wall
-            elif abs(tank.rect.left - wall.rect.right) < 25:
-                tank.x += tank_speed
+    # tank wall collision
+    def wall_collision(self):
+        for wall in game.walls:
+            if pygame.sprite.collide_mask(self, wall):
+                # collision with top side of the wall
+                if abs(self.rect.top - wall.rect.bottom) < 25:
+                    self.y += tank_speed
+                # collision with bottom side of the wall
+                elif abs(wall.rect.top - self.rect.bottom) < 25:
+                    self.y -= tank_speed
+                # collision with the left side of the wall
+                elif abs(wall.rect.left - self.rect.right) < 25:
+                    self.x -= tank_speed
+                # collision with the right side of the wall
+                elif abs(self.rect.left - wall.rect.right) < 25:
+                    self.x += tank_speed

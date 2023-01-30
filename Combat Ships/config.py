@@ -48,8 +48,6 @@ ball_bounce = 3
 shot_time = 10
 
 # Sounds
-yippeee_sound_effect = pygame.mixer.Sound("Sounds/Yippeee.wav")
-vine_boom_sound_effect = pygame.mixer.Sound("Sounds/VineBoom.wav")
-delta_boom_sound_effect = pygame.mixer.Sound("Sounds/DeltaruneBoom.wav")
+explosion_sound_effect = pygame.mixer.Sound("Sounds/explosion.wav")
 thud_sound_effect = pygame.mixer.Sound("Sounds/Thud.wav")
 shot_sound_effect = pygame.mixer.Sound("Sounds/Shot.wav")

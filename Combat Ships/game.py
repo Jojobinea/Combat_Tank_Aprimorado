@@ -12,7 +12,6 @@ tank2 = Tank(tank_2, 730, 280, 8)
 coord = [[400, 275], [40, 120], [730, 120], [730, 400]]
 tank_sprites.add(tank1, tank2)
 hit_timer = 0
-yipee_can_play = True
 
 
 # ball collision with tank
@@ -29,8 +28,7 @@ def ball_collision(tank_one, tank_two):
             tank_one.hit = True
             tank_two.stop = True
             tank_two.score += 1
-            Animation.create_explosion(tank_one.rect.centerx, tank_one.rect.centery)
-            vine_boom_sound_effect.play()
+            explosion_sound_effect.play()
 
 
 class Game:
@@ -90,10 +88,8 @@ class Game:
         while True:
             ball_collision(tank1, tank2)
             ball_collision(tank2, tank1)
-            wall_collision(tank1)
-            wall_collision(tank2)
-            Animation.boom_sprites.draw(screen)
-            Animation.boom_sprites.update()
+            Tank.wall_collision(tank1)
+            Tank.wall_collision(tank2)
             self.check_events()
             draw_sprites()
             check_winner(tank1, tank2)
@@ -123,7 +119,7 @@ def draw_sprites():
 
 
 def check_winner(tank_one, tank_two):
-    global score_text_1, score_text_2, yipee_can_play
+    global score_text_1, score_text_2
 
     if tank_one.score < max_score and tank_two.score < max_score:
         score_text_1 = score_font.render(str(tank_one.score), True, GREEN)
@@ -143,21 +139,11 @@ def check_winner(tank_one, tank_two):
             screen.fill(DARKER_GREEN)
             score_text_1 = score_font.render(str(tank_one.score), True, GREEN)
             screen.blit(victory_text1, victory_text_rect)
-            Animation.yipee_sprites.draw(screen)
-            Animation.yipee_sprites.update()
-            if yipee_can_play:
-                yippeee_sound_effect.play(-1)
-            yipee_can_play = False
 
         elif tank_one.score < tank_two.score:
             screen.fill(DARKER_BLUE)
             score_text_2 = score_font.render(str(tank_two.score), True, BLUE)
             screen.blit(victory_text2, victory_text_rect)
-            Animation.yipee_sprites.draw(screen)
-            Animation.yipee_sprites.update()
-            if yipee_can_play:
-                yippeee_sound_effect.play(-1)
-            yipee_can_play = False
 
 
 # score text
@@ -167,8 +153,9 @@ score_text_2 = score_font.render(f'{tank2.score}', True, BLUE)
 score_text_1_rect = (screen_width / 4, -15)
 score_text_2_rect = (screen_width - screen_width / 4, -15)
 
+
 # victory text
 victory_font = pygame.font.Font('font/Gamer.ttf', 100)
 victory_text1 = victory_font.render('VICTORY PLAYER 1', True, GREEN)
 victory_text2 = victory_font.render('VICTORY PLAYER 2', True, BLUE)
-victory_text_rect = (screen_width / 9, screen_height / 10)
+victory_text_rect = (screen_width / 9, screen_height / 2.5)
